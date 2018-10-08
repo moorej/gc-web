@@ -3,6 +3,7 @@ require 'sinatra'
 require 'date'
 require 'gruff'
 require 'rmagick'
+require 'open-uri'
 include Magick
 
 
@@ -26,6 +27,9 @@ class App < Sinatra::Application
         # returns has of status
         
         spade = {}
+        spade[:img_width] = 40
+        spade[:img_height] = 40
+      
         today = Date.today
 
         # Grab the number of months the users been in the garden
@@ -41,56 +45,69 @@ class App < Sinatra::Application
             spade[:name] = "Seedling"
             spade[:days_down] = (today - hp_date).to_i
             spade[:days_until] = ((hp_date >> 1) - today).to_i
+            spade[:img_width] = 50
+            spade[:img_height] = 67
+            spade[:img_url] = @@spade_img_urls[spade[:id]]
         when 1..2
             spade[:id] = "BRONZE"
             spade[:name] =  "Bronze Spade"
             spade[:days_down] = (today - (hp_date >> 1)).to_i
             spade[:days_until] = ((hp_date >> 3) - today).to_i
+            spade[:img_url] = @@spade_img_urls[spade[:id]]
         when 3..5
             spade[:id] = "SILVER"
             spade[:name] = "Silver Spade"
             spade[:days_down] = (today - (hp_date >> 3)).to_i
             spade[:days_until] = ((hp_date >> 6) - today).to_i
+            spade[:img_url] = @@spade_img_urls[spade[:id]]
         when 6..8
             spade[:id] = "GOLD"
             spade[:name] = "Gold Spade"
             spade[:days_down] = (today - (hp_date >> 6)).to_i
             spade[:days_until] = ((hp_date >> 9) - today).to_i
+            spade[:img_url] = @@spade_img_urls[spade[:id]]
         when 9..11
             spade[:id] = "PALLADIUM"
             spade[:name] = "Palladium Spade"
             spade[:days_down] = (today - (hp_date >> 9)).to_i
             spade[:days_until] = ((hp_date >> 12) - today).to_i
+            spade[:img_width] = 120
+            spade[:img_height] = 80
+            spade[:img_url] = @@spade_img_urls[spade[:id]]
         when 12..14
         	spade[:id] = "PLATINUM"
             spade[:name] = "Platinum Spade"
             spade[:days_down] = (today - (hp_date >> 12)).to_i
             spade[:days_until] = ((hp_date >> 15) - today).to_i
+            spade[:img_url] = @@spade_img_urls[spade[:id]]
         when 15..17
         	spade[:id] = "RUBY"
             spade[:name] = "Ruby"
             spade[:days_down] = (today - (hp_date >> 15)).to_i
             spade[:days_until] = ((hp_date >> 18) - today).to_i
+            spade[:img_url] = @@spade_img_urls[spade[:id]]
         when 18..20
         	spade[:id] = "EMERALT"
             spade[:name] = "Emerald"
             spade[:days_down] = (today - (hp_date >> 18)).to_i
             spade[:days_until] = ((hp_date >> 21) - today).to_i
+            spade[:img_url] = @@spade_img_urls[spade[:id]]
         when 21..23
         	spade[:id] = "SAPPHIRE"
             spade[:name] = "Sapphire"
             spade[:days_down] = (today - (hp_date >> 21)).to_i
             spade[:days_until] = ((hp_date >> 24) - today).to_i
+            spade[:img_url] = @@spade_img_urls[spade[:id]]
         when 24..9999
         	spade[:id] = "DIAMOND"
             spade[:name] = "Diamond"
             spade[:days_down] = (today - (hp_date >> 24)).to_i
             spade[:days_until] = -1
+            spade[:img_url] = @@spade_img_urls[spade[:id]]
         else
             "Error parsing range..."
         end
 
-        spade[:img_url] = @@spade_img_urls[spade[:id]]
         return spade
     end
 
@@ -104,7 +121,14 @@ class App < Sinatra::Application
         end
 
         spade = get_spade_status(hp)
-        redirect spade[:img_url], 308
+        
+        # redirect spade[:img_url], 308
+        i = Image.from_blob(open(spade[:img_url]) {|f| f.read})[0]
+        i.scale!(spade[:img_width], spade[:img_height])
+        
+        content_type 'image/png'
+        i.to_blob
+
     end
 
     get '/spade_countdown_chart/:last_hp_date' do 
@@ -156,6 +180,10 @@ class App < Sinatra::Application
         content_type 'image/png'
         ilist.to_blob
 
+    end
+    not_found do
+        status 404
+        "404 File Not Found"
     end
 
 end
