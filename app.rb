@@ -10,16 +10,16 @@ include Magick
 class App < Sinatra::Application
 
 	@@spade_img_urls = {
-		"SEEDLING"	=> "https://ficoforums.myfico.com/t5/image/serverpage/image-id/2760iB9166C1A493A3CBC",
-		"BRONZE"	=> "https://ficoforums.myfico.com/t5/image/serverpage/image-id/33673iA9327A27227FE439",
-		"SILVER"	=> "https://ficoforums.myfico.com/t5/image/serverpage/image-id/33675i85072060A7E9ED9F",
-		"GOLD"		=> "https://ficoforums.myfico.com/t5/image/serverpage/image-id/33674i6D97EA62D60FAA1E",
-		"PALLADIUM"	=> "https://ficoforums.myfico.com/t5/image/serverpage/image-id/5761iE36E284CEECEA414",
-		"PLATINUM"	=> "https://ficoforums.myfico.com/t5/image/serverpage/image-id/33676i7D22867F5B8C8548",
-		"RUBY"		=> "https://ficoforums.myfico.com/t5/image/serverpage/image-id/5625i09098E9833D7A4B2",
-		"EMERALT"	=> "https://ficoforums.myfico.com/t5/image/serverpage/image-id/5623i698C4BF1F9D77284",
-		"SAPPHIRE"	=> "https://ficoforums.myfico.com/t5/image/serverpage/image-id/5627iA714E0C3C98AD3FD",
-		"DIAMOND"	=> "https://ficoforums.myfico.com/t5/image/serverpage/image-id/33677iDA1FD49740EB050B"	
+		"SEEDLING"	=> "http://ficoforums.myfico.com/t5/image/serverpage/image-id/2760iB9166C1A493A3CBC",
+		"BRONZE"	=> "http://ficoforums.myfico.com/t5/image/serverpage/image-id/33673iA9327A27227FE439",
+		"SILVER"	=> "http://ficoforums.myfico.com/t5/image/serverpage/image-id/33675i85072060A7E9ED9F",
+		"GOLD"		=> "http://ficoforums.myfico.com/t5/image/serverpage/image-id/33674i6D97EA62D60FAA1E",
+		"PALLADIUM"	=> "http://ficoforums.myfico.com/t5/image/serverpage/image-id/5761iE36E284CEECEA414",
+		"PLATINUM"	=> "http://ficoforums.myfico.com/t5/image/serverpage/image-id/33676i7D22867F5B8C8548",
+		"RUBY"		=> "http://ficoforums.myfico.com/t5/image/serverpage/image-id/5625i09098E9833D7A4B2",
+		"EMERALT"	=> "http://ficoforums.myfico.com/t5/image/serverpage/image-id/5623i698C4BF1F9D77284",
+		"SAPPHIRE"	=> "http://ficoforums.myfico.com/t5/image/serverpage/image-id/5627iA714E0C3C98AD3FD",
+		"DIAMOND"	=> "http://ficoforums.myfico.com/t5/image/serverpage/image-id/33677iDA1FD49740EB050B"	
 	}
 
 
