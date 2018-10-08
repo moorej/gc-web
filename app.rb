@@ -2,7 +2,7 @@ require 'rubygems'
 require 'sinatra'
 require 'date'
 require 'gruff'
-require 'RMagick'
+require 'rmagick'
 include Magick
 
 
@@ -117,7 +117,7 @@ class App < Sinatra::Application
 
         spade = get_spade_status(hp)
 
-        g = Gruff::SideStackedBar.new('400x24')
+        g = Gruff::SideStackedBar.new('404x22')
         g.hide_legend = g.hide_title = g.hide_line_markers = true
         g.hide_line_numbers = false
         g.top_margin = g.bottom_margin = g.left_margin = g.right_margin = 0
@@ -133,8 +133,10 @@ class App < Sinatra::Application
         ilist.from_blob(g.to_blob)
         txt = Draw.new
 
+        ilist.crop!(Magick::CenterGravity, 400, 18)
+
         if spade[:days_down] >= 3 || spade[:days_until] == -1
-            ilist.annotate(txt, 0,0,2,0, "#{spade[:days_down]}"){
+            ilist.annotate(txt, 0,0,4,0, "#{spade[:days_down]}"){
                 txt.gravity = Magick::WestGravity
                 txt.pointsize = 18
                 txt.fill = '#ffffff'
@@ -143,7 +145,7 @@ class App < Sinatra::Application
         end
 
         if spade[:days_until] >= 3
-            ilist.annotate(txt, 0,0,2,0, "#{spade[:days_until]}"){
+            ilist.annotate(txt, 0,0,7,0, "#{spade[:days_until]}"){
                 txt.gravity = Magick::EastGravity
                 txt.pointsize = 18
                 txt.fill = '#ffffff'

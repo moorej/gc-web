@@ -2,7 +2,7 @@ require 'gruff'
 require 'RMagick'
 include Magick
 
-g = Gruff::SideStackedBar.new('400x24')
+g = Gruff::SideStackedBar.new('404x22')
 g.hide_legend = g.hide_title = g.hide_line_markers = true
 g.hide_line_numbers = false
 g.top_margin = g.bottom_margin = g.left_margin = g.right_margin = 0
@@ -15,17 +15,19 @@ ilist = ImageList.new
 ilist.from_blob(g.to_blob)
 txt = Draw.new
 
-ilist.annotate(txt, 0,0,2,0, "30"){
+ilist.crop!(Magick::CenterGravity, 400, 18)
+
+ilist.annotate(txt, 0,0,4,0, "30"){
 	txt.gravity = Magick::WestGravity
-	txt.pointsize = 18
+	txt.pointsize = 14
 	# txt.stroke = '#000000'
 	txt.fill = '#ffffff'
 	txt.font_weight = Magick::BoldWeight
 }
 
-ilist.annotate(txt, 0,0,2,0, "62"){
+ilist.annotate(txt, 0,0,7,0, "62"){
 	txt.gravity = Magick::EastGravity
-	txt.pointsize = 18
+	txt.pointsize = 14
 	# txt.stroke = '#000000'
 	txt.fill = '#ffffff'
 	txt.font_weight = Magick::BoldWeight
