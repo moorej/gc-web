@@ -9,26 +9,24 @@ include Magick
 
 class App < Sinatra::Application
 
-	@@spade_img_urls = {
-		"SEEDLING"	=> "http://ficoforums.myfico.com/t5/image/serverpage/image-id/2760iB9166C1A493A3CBC",
-		"BRONZE"	=> "http://ficoforums.myfico.com/t5/image/serverpage/image-id/33673iA9327A27227FE439",
-		"SILVER"	=> "http://ficoforums.myfico.com/t5/image/serverpage/image-id/33675i85072060A7E9ED9F",
-		"GOLD"		=> "http://ficoforums.myfico.com/t5/image/serverpage/image-id/33674i6D97EA62D60FAA1E",
-		"PALLADIUM"	=> "http://ficoforums.myfico.com/t5/image/serverpage/image-id/5761iE36E284CEECEA414",
-		"PLATINUM"	=> "http://ficoforums.myfico.com/t5/image/serverpage/image-id/33676i7D22867F5B8C8548",
-		"RUBY"		=> "http://ficoforums.myfico.com/t5/image/serverpage/image-id/5625i09098E9833D7A4B2",
-		"EMERALT"	=> "http://ficoforums.myfico.com/t5/image/serverpage/image-id/5623i698C4BF1F9D77284",
-		"SAPPHIRE"	=> "http://ficoforums.myfico.com/t5/image/serverpage/image-id/5627iA714E0C3C98AD3FD",
-		"DIAMOND"	=> "http://ficoforums.myfico.com/t5/image/serverpage/image-id/33677iDA1FD49740EB050B"	
-	}
+#	@@spade_img_urls = {
+#		"SEEDLING"	=> "http://ficoforums.myfico.com/t5/image/serverpage/image-id/2760iB9166C1A493A3CBC",
+#		"BRONZE"	=> "http://ficoforums.myfico.com/t5/image/serverpage/image-id/33673iA9327A27227FE439",
+#		"SILVER"	=> "http://ficoforums.myfico.com/t5/image/serverpage/image-id/33675i85072060A7E9ED9F",
+#		"GOLD"		=> "http://ficoforums.myfico.com/t5/image/serverpage/image-id/33674i6D97EA62D60FAA1E",
+#		"PALLADIUM"	=> "http://ficoforums.myfico.com/t5/image/serverpage/image-id/5761iE36E284CEECEA414",
+#		"PLATINUM"	=> "http://ficoforums.myfico.com/t5/image/serverpage/image-id/33676i7D22867F5B8C8548",
+#		"RUBY"		=> "http://ficoforums.myfico.com/t5/image/serverpage/image-id/5625i09098E9833D7A4B2",
+#		"EMERALT"	=> "http://ficoforums.myfico.com/t5/image/serverpage/image-id/5623i698C4BF1F9D77284",
+#		"SAPPHIRE"	=> "http://ficoforums.myfico.com/t5/image/serverpage/image-id/5627iA714E0C3C98AD3FD",
+#		"DIAMOND"	=> "http://ficoforums.myfico.com/t5/image/serverpage/image-id/33677iDA1FD49740EB050B"	
+#	}
 
 
     def get_spade_status(hp_date)
         # returns has of status
         
         spade = {}
-        spade[:img_width] = 40
-        spade[:img_height] = 40
       
         today = Date.today
 
@@ -45,65 +43,61 @@ class App < Sinatra::Application
             spade[:name] = "Seedling"
             spade[:days_down] = (today - hp_date).to_i
             spade[:days_until] = ((hp_date >> 1) - today).to_i
-            spade[:img_width] = 50
-            spade[:img_height] = 67
-            spade[:img_url] = @@spade_img_urls[spade[:id]]
+            spade[:img_url] = "images/#{spade[:id].downcase}.png"
         when 1..2
             spade[:id] = "BRONZE"
             spade[:name] =  "Bronze Spade"
             spade[:days_down] = (today - (hp_date >> 1)).to_i
             spade[:days_until] = ((hp_date >> 3) - today).to_i
-            spade[:img_url] = @@spade_img_urls[spade[:id]]
+            spade[:img_url] = @@spade_img_pade[:img_width] = 40
         when 3..5
             spade[:id] = "SILVER"
             spade[:name] = "Silver Spade"
             spade[:days_down] = (today - (hp_date >> 3)).to_i
             spade[:days_until] = ((hp_date >> 6) - today).to_i
-            spade[:img_url] = @@spade_img_urls[spade[:id]]
+            spade[:img_url] = "images/#{spade[:id].downcase}.png"
         when 6..8
             spade[:id] = "GOLD"
             spade[:name] = "Gold Spade"
             spade[:days_down] = (today - (hp_date >> 6)).to_i
             spade[:days_until] = ((hp_date >> 9) - today).to_i
-            spade[:img_url] = @@spade_img_urls[spade[:id]]
+            spade[:img_url] = "images/#{spade[:id].downcase}.png"
         when 9..11
             spade[:id] = "PALLADIUM"
             spade[:name] = "Palladium Spade"
             spade[:days_down] = (today - (hp_date >> 9)).to_i
             spade[:days_until] = ((hp_date >> 12) - today).to_i
-            spade[:img_width] = 120
-            spade[:img_height] = 80
-            spade[:img_url] = @@spade_img_urls[spade[:id]]
+            spade[:img_url] = "images/#{spade[:id].downcase}.png"
         when 12..14
         	spade[:id] = "PLATINUM"
             spade[:name] = "Platinum Spade"
             spade[:days_down] = (today - (hp_date >> 12)).to_i
             spade[:days_until] = ((hp_date >> 15) - today).to_i
-            spade[:img_url] = @@spade_img_urls[spade[:id]]
+            spade[:img_url] = "images/#{spade[:id].downcase}.png"
         when 15..17
         	spade[:id] = "RUBY"
             spade[:name] = "Ruby"
             spade[:days_down] = (today - (hp_date >> 15)).to_i
             spade[:days_until] = ((hp_date >> 18) - today).to_i
-            spade[:img_url] = @@spade_img_urls[spade[:id]]
+            spade[:img_url] = "images/#{spade[:id].downcase}.png"
         when 18..20
         	spade[:id] = "EMERALT"
             spade[:name] = "Emerald"
             spade[:days_down] = (today - (hp_date >> 18)).to_i
             spade[:days_until] = ((hp_date >> 21) - today).to_i
-            spade[:img_url] = @@spade_img_urls[spade[:id]]
+            spade[:img_url] = "images/#{spade[:id].downcase}.png"
         when 21..23
         	spade[:id] = "SAPPHIRE"
             spade[:name] = "Sapphire"
             spade[:days_down] = (today - (hp_date >> 21)).to_i
             spade[:days_until] = ((hp_date >> 24) - today).to_i
-            spade[:img_url] = @@spade_img_urls[spade[:id]]
+            spade[:img_url] = "images/#{spade[:id].downcase}.png"
         when 24..9999
         	spade[:id] = "DIAMOND"
             spade[:name] = "Diamond"
             spade[:days_down] = (today - (hp_date >> 24)).to_i
             spade[:days_until] = -1
-            spade[:img_url] = @@spade_img_urls[spade[:id]]
+            spade[:img_url] = "images/#{spade[:id].downcase}.png"
         else
             "Error parsing range..."
         end
@@ -121,13 +115,8 @@ class App < Sinatra::Application
         end
 
         spade = get_spade_status(hp)
+        send_file spade[:img_url]
         
-        # redirect spade[:img_url], 308
-        i = Image.from_blob(open(spade[:img_url]) {|f| f.read})[0]
-        i.scale!(spade[:img_width], spade[:img_height])
-        
-        content_type 'image/png'
-        i.to_blob
 
     end
 
