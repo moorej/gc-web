@@ -138,7 +138,7 @@ class App < Sinatra::Application
         if spade[:days_down] >= 3 || spade[:days_until] == -1
             ilist.annotate(txt, 0,0,4,0, "#{spade[:days_down]}"){
                 txt.gravity = Magick::WestGravity
-                txt.pointsize = 18
+                txt.pointsize = 14
                 txt.fill = '#ffffff'
                 txt.font_weight = Magick::BoldWeight
             }
@@ -147,7 +147,7 @@ class App < Sinatra::Application
         if spade[:days_until] >= 3
             ilist.annotate(txt, 0,0,7,0, "#{spade[:days_until]}"){
                 txt.gravity = Magick::EastGravity
-                txt.pointsize = 18
+                txt.pointsize = 14
                 txt.fill = '#ffffff'
                 txt.font_weight = Magick::BoldWeight
             }
