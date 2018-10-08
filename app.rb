@@ -9,20 +9,6 @@ include Magick
 
 class App < Sinatra::Application
 
-#	@@spade_img_urls = {
-#		"SEEDLING"	=> "http://ficoforums.myfico.com/t5/image/serverpage/image-id/2760iB9166C1A493A3CBC",
-#		"BRONZE"	=> "http://ficoforums.myfico.com/t5/image/serverpage/image-id/33673iA9327A27227FE439",
-#		"SILVER"	=> "http://ficoforums.myfico.com/t5/image/serverpage/image-id/33675i85072060A7E9ED9F",
-#		"GOLD"		=> "http://ficoforums.myfico.com/t5/image/serverpage/image-id/33674i6D97EA62D60FAA1E",
-#		"PALLADIUM"	=> "http://ficoforums.myfico.com/t5/image/serverpage/image-id/5761iE36E284CEECEA414",
-#		"PLATINUM"	=> "http://ficoforums.myfico.com/t5/image/serverpage/image-id/33676i7D22867F5B8C8548",
-#		"RUBY"		=> "http://ficoforums.myfico.com/t5/image/serverpage/image-id/5625i09098E9833D7A4B2",
-#		"EMERALT"	=> "http://ficoforums.myfico.com/t5/image/serverpage/image-id/5623i698C4BF1F9D77284",
-#		"SAPPHIRE"	=> "http://ficoforums.myfico.com/t5/image/serverpage/image-id/5627iA714E0C3C98AD3FD",
-#		"DIAMOND"	=> "http://ficoforums.myfico.com/t5/image/serverpage/image-id/33677iDA1FD49740EB050B"	
-#	}
-
-
     def get_spade_status(hp_date)
         # returns has of status
         
@@ -130,7 +116,7 @@ class App < Sinatra::Application
 
         spade = get_spade_status(hp)
 
-        g = Gruff::SideStackedBar.new('404x22')
+        g = Gruff::SideStackedBar.new('401x21')
         g.hide_legend = g.hide_title = g.hide_line_markers = true
         g.hide_line_numbers = false
         g.top_margin = g.bottom_margin = g.left_margin = g.right_margin = 0
@@ -146,10 +132,8 @@ class App < Sinatra::Application
         ilist.from_blob(g.to_blob)
         txt = Draw.new
 
-        ilist.crop!(Magick::CenterGravity, 400, 18)
-
         if spade[:days_down] >= 3 || spade[:days_until] == -1
-            ilist.annotate(txt, 0,0,4,0, "#{spade[:days_down]}"){
+            ilist.annotate(txt, 0,0,3,3, "#{spade[:days_down]}"){
                 txt.gravity = Magick::WestGravity
                 txt.pointsize = 14
                 txt.fill = '#ffffff'
@@ -158,13 +142,15 @@ class App < Sinatra::Application
         end
 
         if spade[:days_until] >= 3
-            ilist.annotate(txt, 0,0,7,0, "#{spade[:days_until]}"){
+            ilist.annotate(txt, 0,0,2,3, "#{spade[:days_until]}"){
                 txt.gravity = Magick::EastGravity
                 txt.pointsize = 14
                 txt.fill = '#ffffff'
                 txt.font_weight = Magick::BoldWeight
             }
         end
+        
+        ilist.corp!(0, 4, 400, 18
 
         content_type 'image/png'
         ilist.to_blob
