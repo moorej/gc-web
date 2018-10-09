@@ -108,7 +108,7 @@ class App < Sinatra::Application
                 txt.gravity = Magick::WestGravity
                 txt.pointsize = 13
                 txt.fill = '#ffffff'
-                txt.font_weight = Magick::NormalWeight
+                txt.font_weight = 500
             }
         end
 
@@ -123,7 +123,7 @@ class App < Sinatra::Application
                 txt.gravity = Magick::EastGravity
                 txt.pointsize = 13
                 txt.fill = '#ffffff'
-                txt.font_weight = Magick::NormalWeight 
+                txt.font_weight = 500
             }
         end
 
@@ -131,7 +131,7 @@ class App < Sinatra::Application
             txt.gravity = Magick::CenterGravity
             txt.pointsize = 12
             txt.fill = '#ffffff'
-            txt.font_weight = Magick::NormalWeight
+            txt.font_weight = 500
         }
 
         ilist.crop!(0, 4, 400, 18)
