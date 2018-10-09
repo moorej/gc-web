@@ -133,7 +133,7 @@ class App < Sinatra::Application
         txt = Draw.new
 
         if spade[:days_down] >= 3 || spade[:days_until] == -1
-            ilist.annotate(txt, 0,0,3,3, "#{spade[:days_down]}"){
+            ilist.annotate(txt, 0,0,3,4, "#{spade[:days_down]}"){
                 txt.gravity = Magick::WestGravity
                 txt.pointsize = 14
                 txt.fill = '#ffffff'
@@ -142,7 +142,7 @@ class App < Sinatra::Application
         end
 
         if spade[:days_until] >= 3
-            ilist.annotate(txt, 0,0,2,3, "#{spade[:days_until]}"){
+            ilist.annotate(txt, 0,0,2,4, "#{spade[:days_until]}"){
                 txt.gravity = Magick::EastGravity
                 txt.pointsize = 14
                 txt.fill = '#ffffff'
@@ -150,12 +150,13 @@ class App < Sinatra::Application
             }
         end
         
-        ilist.corp!(0, 4, 400, 18
+        ilist.crop!(0, 4, 400, 18)
 
         content_type 'image/png'
         ilist.to_blob
 
     end
+
     not_found do
         status 404
         "404 File Not Found"
