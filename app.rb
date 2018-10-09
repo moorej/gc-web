@@ -9,23 +9,23 @@ include Magick
 
 class App < Sinatra::Application
     @@spades = [
-        { :id => 'SEEDLING', :name => 'Seedling', :min_mo => 0, :dur => 1 },
-        { :id => 'BRONZE', :name => 'Bronze Spade', :min_mo => 1, :dur => 2 },
-        { :id => 'SILVER', :name => 'Silver Spade', :min_mo => 3, :dur => 3 },
-        { :id => 'GOLD', :name => 'Gold Spade', :min_mo => 6, :dur => 3 },
-        { :id => 'PALLADIUM', :name => 'Palladium Spade', :min_mo => 9, :dur => 3 },
-        { :id => 'PLATINUM', :name => 'Platinum Spade', :min_mo => 12, :dur => 3 },
-        { :id => 'RUBY', :name => 'Ruby Spade', :min_mo => 15, :dur => 3 },
-        { :id => 'EMERALD', :name => 'Emerald Spade', :min_mo => 18, :dur => 3 },
-        { :id => 'SAPPHIRE', :name => 'Sapphire Spade', :min_mo => 21, :dur => 3 },
-        { :id => 'DIAMOND', :name => 'Diamond', :min_mo => 24, :dur => 9999 }
+        { :id => 'SEEDLING', :name => 'Seedling', :min_mo => 0, :dur => 1, :next_name => 'Bronze Spade' },
+        { :id => 'BRONZE', :name => 'Bronze Spade', :min_mo => 1, :dur => 2, :next_name => 'Silver Spade' },
+        { :id => 'SILVER', :name => 'Silver Spade', :min_mo => 3, :dur => 3, :next_name => 'Gold Spade' },
+        { :id => 'GOLD', :name => 'Gold Spade', :min_mo => 6, :dur => 3, :next_name => 'Palladium Spade' },
+        { :id => 'PALLADIUM', :name => 'Palladium Spade', :min_mo => 9, :dur => 3, :next_name => 'Platinum Spade' },
+        { :id => 'PLATINUM', :name => 'Platinum Spade', :min_mo => 12, :dur => 3, :next_name => 'Ruby' },
+        { :id => 'RUBY', :name => 'Ruby', :min_mo => 15, :dur => 3, :next_name => 'Emerald' },
+        { :id => 'EMERALD', :name => 'Emerald', :min_mo => 18, :dur => 3, :next_name => 'Sapphire' },
+        { :id => 'SAPPHIRE', :name => 'Sapphire', :min_mo => 21, :dur => 3, :next_name => 'Diamond' },
+        { :id => 'DIAMOND', :name => 'Diamond', :min_mo => 24, :dur => 9999, :next_name => nil }
     ]
 
     def get_spade_status(hp_date)
         # returns has of status
         
         spade = {}
-      
+
         today = Date.today
 
         # Grab the number of months the users been in the garden
@@ -37,7 +37,8 @@ class App < Sinatra::Application
         @@spades.each do |s|
             if (s[:min_mo]..(s[:min_mo] + s[:dur])) === hp_age_months
                 spade[:id] = s[:id]
-                spade[:name] = s[:id]
+                spade[:name] = s[:name]
+                spade[:next_name] = s[:next_name]
                 spade[:days_down] = (today - (hp_date >> s[:min_mo])).to_i
                 
                 if s[:dur] != 9999
@@ -95,39 +96,45 @@ class App < Sinatra::Application
         ilist.from_blob(g.to_blob)
         txt = Draw.new
 
-        total_days = (spade[:days_down] + spade[:days_until]).to_f
+#        total_days = (spade[:days_down] + spade[:days_until]).to_f
 
-        if spade[:days_down] / total_days >= 0.04 || spade[:days_until] == -1
-            if spade[:days_until] == 0 || spade[:days_down]/ total_days >= 0.14
-                left_text = "#{spade[:days_down]} down"
-            else
-                left_text = "#{spade[:days_down]}"
-            end
+#        if spade[:days_down] / total_days >= 0.04 && spade[:days_until] != -1
+#            if spade[:days_until] == 0 || spade[:days_down]/ total_days >= 0.14
+#                left_text = "#{spade[:days_down]} down"
+#            else
+#                left_text = "#{spade[:days_down]}"
+#            end
+#
+#            ilist.annotate(txt, 0,0,3,3, left_text){
+#                txt.gravity = Magick::WestGravity
+#                txt.pointsize = 13
+#                txt.fill = '#ffffff'
+#                txt.font_weight = 600
+#            }
+#        end
 
-            ilist.annotate(txt, 0,0,3,3, left_text){
-                txt.gravity = Magick::WestGravity
-                txt.pointsize = 13
-                txt.fill = '#ffffff'
-                txt.font_weight = 600
-            }
+#        if spade[:days_until] / total_days >= 0.04
+#            if spade[:days_down] == 0 || spade[:days_until] / total_days >= 0.14
+#                right_text = "#{spade[:days_until]} to go"
+#            else
+#                right_text = "#{spade[:days_until]}"
+#            end
+#            
+#             ilist.annotate(txt, 0,0,2,3, right_text){
+#                txt.gravity = Magick::EastGravity
+#                txt.pointsize = 13
+#                txt.fill = '#ffffff'
+#                txt.font_weight = 600
+#            }
+#        end
+
+        if spade[:next_name]
+            title_text = "#{spade[:days_until]} Days Until #{spade[:next_name]}"
+        else 
+            title_text = "#{spade[:days_down]} Days With #{spade[:name]}"
         end
 
-        if spade[:days_until] / total_days >= 0.04
-            if spade[:days_down] == 0 || spade[:days_until] / total_days >= 0.14
-                right_text = "#{spade[:days_until]} to go"
-            else
-                right_text = "#{spade[:days_until]}"
-            end
-            
-            ilist.annotate(txt, 0,0,2,3, right_text){
-                txt.gravity = Magick::EastGravity
-                txt.pointsize = 13
-                txt.fill = '#ffffff'
-                txt.font_weight = 600
-            }
-        end
-
-        ilist.annotate(txt, 0,0,0,3, "Days Until Next Spade"){
+        ilist.annotate(txt, 0,0,0,3, title_text){
             txt.gravity = Magick::CenterGravity
             txt.pointsize = 12
             txt.fill = '#ffffff'
