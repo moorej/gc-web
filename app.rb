@@ -8,6 +8,18 @@ include Magick
 
 
 class App < Sinatra::Application
+    @@spades = [
+        { :id => 'SEEDLING', :name => 'Seedling', :min_mo => 0, :dur => 1 },
+        { :id => 'BRONZE', :name => 'Bronze Spade', :min_mo => 1, :dur => 2 },
+        { :id => 'SILVER', :name => 'Silver Spade', :min_mo => 3, :dur => 3 },
+        { :id => 'GOLD', :name => 'Gold Spade', :min_mo => 6, :dur => 3 },
+        { :id => 'PALLADIUM', :name => 'Palladium Spade', :min_mo => 9, :dur => 3 },
+        { :id => 'PLATINUM', :name => 'Platinum Spade', :min_mo => 12, :dur => 3 },
+        { :id => 'RUBY', :name => 'Ruby Spade', :min_mo => 15, :dur => 3 },
+        { :id => 'EMERALD', :name => 'Emerald Spade', :min_mo => 18, :dur => 3 },
+        { :id => 'SAPPHIRE', :name => 'Sapphire Spade', :min_mo => 21, :dur => 3 },
+        { :id => 'DIAMOND', :name => 'Diamond', :min_mo => 24, :dur => 9999 }
+    ]
 
     def get_spade_status(hp_date)
         # returns has of status
@@ -17,75 +29,26 @@ class App < Sinatra::Application
         today = Date.today
 
         # Grab the number of months the users been in the garden
-        months = (today.year * 12 + today.month) - (hp_date.year * 12 + hp_date.month)
+        hp_age_months = (today.year * 12 + today.month) - (hp_date.year * 12 + hp_date.month)
         if (hp_date.day > today.day)
-            months -= 1
+            hp_age_months -= 1
         end
 
-        # This should be obvious...
-        case months
-        when 0
-            spade[:id] = "SEEDLING"
-            spade[:name] = "Seedling"
-            spade[:days_down] = (today - hp_date).to_i
-            spade[:days_until] = ((hp_date >> 1) - today).to_i
-            spade[:img_url] = "images/#{spade[:id].downcase}.png"
-        when 1..2
-            spade[:id] = "BRONZE"
-            spade[:name] =  "Bronze Spade"
-            spade[:days_down] = (today - (hp_date >> 1)).to_i
-            spade[:days_until] = ((hp_date >> 3) - today).to_i
-            spade[:img_url] = @@spade_img_pade[:img_width] = 40
-        when 3..5
-            spade[:id] = "SILVER"
-            spade[:name] = "Silver Spade"
-            spade[:days_down] = (today - (hp_date >> 3)).to_i
-            spade[:days_until] = ((hp_date >> 6) - today).to_i
-            spade[:img_url] = "images/#{spade[:id].downcase}.png"
-        when 6..8
-            spade[:id] = "GOLD"
-            spade[:name] = "Gold Spade"
-            spade[:days_down] = (today - (hp_date >> 6)).to_i
-            spade[:days_until] = ((hp_date >> 9) - today).to_i
-            spade[:img_url] = "images/#{spade[:id].downcase}.png"
-        when 9..11
-            spade[:id] = "PALLADIUM"
-            spade[:name] = "Palladium Spade"
-            spade[:days_down] = (today - (hp_date >> 9)).to_i
-            spade[:days_until] = ((hp_date >> 12) - today).to_i
-            spade[:img_url] = "images/#{spade[:id].downcase}.png"
-        when 12..14
-        	spade[:id] = "PLATINUM"
-            spade[:name] = "Platinum Spade"
-            spade[:days_down] = (today - (hp_date >> 12)).to_i
-            spade[:days_until] = ((hp_date >> 15) - today).to_i
-            spade[:img_url] = "images/#{spade[:id].downcase}.png"
-        when 15..17
-        	spade[:id] = "RUBY"
-            spade[:name] = "Ruby"
-            spade[:days_down] = (today - (hp_date >> 15)).to_i
-            spade[:days_until] = ((hp_date >> 18) - today).to_i
-            spade[:img_url] = "images/#{spade[:id].downcase}.png"
-        when 18..20
-        	spade[:id] = "EMERALT"
-            spade[:name] = "Emerald"
-            spade[:days_down] = (today - (hp_date >> 18)).to_i
-            spade[:days_until] = ((hp_date >> 21) - today).to_i
-            spade[:img_url] = "images/#{spade[:id].downcase}.png"
-        when 21..23
-        	spade[:id] = "SAPPHIRE"
-            spade[:name] = "Sapphire"
-            spade[:days_down] = (today - (hp_date >> 21)).to_i
-            spade[:days_until] = ((hp_date >> 24) - today).to_i
-            spade[:img_url] = "images/#{spade[:id].downcase}.png"
-        when 24..9999
-        	spade[:id] = "DIAMOND"
-            spade[:name] = "Diamond"
-            spade[:days_down] = (today - (hp_date >> 24)).to_i
-            spade[:days_until] = -1
-            spade[:img_url] = "images/#{spade[:id].downcase}.png"
-        else
-            "Error parsing range..."
+        @@spades.each do |s|
+            if (s[:min_mo]..(s[:min_mo] + s[:dur])) === hp_age_months
+                spade[:id] = s[:id]
+                spade[:name] = s[:id]
+                spade[:days_down] = (today - (hp_date >> s[:min_mo])).to_i
+                
+                if s[:dur] != 9999
+                    spade[:days_until] = ((hp_date >> (s[:min_mo] + s[:dur])) - today).to_i
+                else
+                    spade[:days_until] = -1
+                end
+
+                spade[:img_url] = "images/#{spade[:id].downcase}.png"
+
+            end
         end
 
         return spade
@@ -133,7 +96,13 @@ class App < Sinatra::Application
         txt = Draw.new
 
         if spade[:days_down] >= 3 || spade[:days_until] == -1
-            ilist.annotate(txt, 0,0,3,4, "#{spade[:days_down]}"){
+            if spade[:days_down] >= 14
+                left_text = "#{spade[:days_down]} down"
+            else
+                left_text = "#{spade[:days_down]}"
+            end
+
+            ilist.annotate(txt, 0,0,3,4, left_text){
                 txt.gravity = Magick::WestGravity
                 txt.pointsize = 14
                 txt.fill = '#ffffff'
@@ -142,14 +111,27 @@ class App < Sinatra::Application
         end
 
         if spade[:days_until] >= 3
-            ilist.annotate(txt, 0,0,2,4, "#{spade[:days_until]}"){
+            if spade[:days_until] >= 13
+                right_text = "#{spade[:days_until]} to go"
+            else
+                right_text = "#{spade[:days_until]}"
+            end
+            
+            ilist.annotate(txt, 0,0,2,4, right_text){
                 txt.gravity = Magick::EastGravity
                 txt.pointsize = 14
                 txt.fill = '#ffffff'
                 txt.font_weight = Magick::BoldWeight
             }
         end
-        
+
+        ilist.annotate(txt, 0,0,0,3, "Days Until Next Spade"){
+            txt.gravity = Magick::CenterGravity
+            txt.pointsize = 12
+            txt.fill = '#ffffff'
+            #txt.font_weight = Magick::BoldWeight
+        }
+
         ilist.crop!(0, 4, 400, 18)
 
         content_type 'image/png'
