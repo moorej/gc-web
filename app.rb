@@ -95,8 +95,10 @@ class App < Sinatra::Application
         ilist.from_blob(g.to_blob)
         txt = Draw.new
 
-        if spade[:days_down] >= 3 || spade[:days_until] == -1
-            if spade[:days_down] >= 14
+        total_days = (spade[:days_down] + spade[:days_until]).to_f
+
+        if spade[:days_down] / total_days >= 0.04 || spade[:days_until] == -1
+            if spade[:days_until] == 0 || spade[:days_down]/ total_days >= 0.14
                 left_text = "#{spade[:days_down]} down"
             else
                 left_text = "#{spade[:days_down]}"
@@ -106,12 +108,12 @@ class App < Sinatra::Application
                 txt.gravity = Magick::WestGravity
                 txt.pointsize = 13
                 txt.fill = '#ffffff'
-                txt.font_weight = Magick::BoldWeight
+                txt.font_weight = Magick::NormalWeight
             }
         end
 
-        if spade[:days_until] >= 3
-            if spade[:days_until] >= 13
+        if spade[:days_until] / total_days >= 0.04
+            if spade[:days_down] == 0 || spade[:days_until] / total_days >= 0.14
                 right_text = "#{spade[:days_until]} to go"
             else
                 right_text = "#{spade[:days_until]}"
@@ -121,7 +123,7 @@ class App < Sinatra::Application
                 txt.gravity = Magick::EastGravity
                 txt.pointsize = 13
                 txt.fill = '#ffffff'
-                txt.font_weight = Magick::BoldWeight
+                txt.font_weight = Magick::NormalWeight 
             }
         end
 
@@ -129,7 +131,7 @@ class App < Sinatra::Application
             txt.gravity = Magick::CenterGravity
             txt.pointsize = 12
             txt.fill = '#ffffff'
-            #txt.font_weight = Magick::BoldWeight
+            txt.font_weight = Magick::NormalWeight
         }
 
         ilist.crop!(0, 4, 400, 18)
