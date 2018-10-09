@@ -96,38 +96,6 @@ class App < Sinatra::Application
         ilist.from_blob(g.to_blob)
         txt = Draw.new
 
-#        total_days = (spade[:days_down] + spade[:days_until]).to_f
-
-#        if spade[:days_down] / total_days >= 0.04 && spade[:days_until] != -1
-#            if spade[:days_until] == 0 || spade[:days_down]/ total_days >= 0.14
-#                left_text = "#{spade[:days_down]} down"
-#            else
-#                left_text = "#{spade[:days_down]}"
-#            end
-#
-#            ilist.annotate(txt, 0,0,3,3, left_text){
-#                txt.gravity = Magick::WestGravity
-#                txt.pointsize = 13
-#                txt.fill = '#ffffff'
-#                txt.font_weight = 600
-#            }
-#        end
-
-#        if spade[:days_until] / total_days >= 0.04
-#            if spade[:days_down] == 0 || spade[:days_until] / total_days >= 0.14
-#                right_text = "#{spade[:days_until]} to go"
-#            else
-#                right_text = "#{spade[:days_until]}"
-#            end
-#            
-#             ilist.annotate(txt, 0,0,2,3, right_text){
-#                txt.gravity = Magick::EastGravity
-#                txt.pointsize = 13
-#                txt.fill = '#ffffff'
-#                txt.font_weight = 600
-#            }
-#        end
-
         if spade[:next_name]
             title_text = "#{spade[:days_until]} Days Until #{spade[:next_name]}"
         else 
