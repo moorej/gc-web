@@ -102,9 +102,9 @@ class App < Sinatra::Application
                 left_text = "#{spade[:days_down]}"
             end
 
-            ilist.annotate(txt, 0,0,3,4, left_text){
+            ilist.annotate(txt, 0,0,3,3, left_text){
                 txt.gravity = Magick::WestGravity
-                txt.pointsize = 14
+                txt.pointsize = 13
                 txt.fill = '#ffffff'
                 txt.font_weight = Magick::BoldWeight
             }
@@ -117,9 +117,9 @@ class App < Sinatra::Application
                 right_text = "#{spade[:days_until]}"
             end
             
-            ilist.annotate(txt, 0,0,2,4, right_text){
+            ilist.annotate(txt, 0,0,2,3, right_text){
                 txt.gravity = Magick::EastGravity
-                txt.pointsize = 14
+                txt.pointsize = 13
                 txt.fill = '#ffffff'
                 txt.font_weight = Magick::BoldWeight
             }
