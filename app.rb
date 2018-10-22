@@ -2,9 +2,6 @@ require 'sinatra'
 require 'date'
 require './chart'
 
-include Magick
-
-
 class App < Sinatra::Application
     get '/spade_image/:date' do
         date = query_date_to_date(params[:date])
