@@ -22,7 +22,7 @@ class App < Sinatra::Application
         c.to_blob
     end
 
-    get '/garden_goal/:start_date/:end_date' do
+    get '/garden_goal_chart/:start_date/:end_date' do
         start_date = query_date_to_date(params[:start_date])
         end_date = query_date_to_date(params[:end_date])
         today = Date.today
