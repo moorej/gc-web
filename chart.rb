@@ -1,6 +1,7 @@
 require 'date'
 require 'gruff'
 require 'rmagick'
+include Magick
 
 class Chart
   attr_accessor :composite
@@ -14,7 +15,7 @@ class Chart
   end
   
   def generate_chart(blue, red, text)
-    g = Gruff::SideStackedBar.new('401x21')
+    g = Gruff::SideStackedBar.new('383x21')
     g.hide_legend = g.hide_title = g.hide_line_markers  = hide_line_numbers = true
     g.top_margin = g.bottom_margin = g.left_margin = g.right_margin = g.title_margin = g.legend_margin =  0
     g.data(:blue, [blue], '#09519e')
@@ -34,7 +35,7 @@ class Chart
         txt.font_weight = 600
     }
 
-    il.crop!(0, 4, 400, 18)
+    il.crop!(0, 4, 382, 18)
     il
   end
 
