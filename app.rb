@@ -3,6 +3,10 @@ require 'date'
 require './chart'
 
 class App < Sinatra::Application
+    get '/' do
+        send_file File.join(settings.public_folder, 'readme.html')
+    end
+
     get '/spade_image/:date' do
         date = query_date_to_date(params[:date])
         halt 400, "400 Date must be in the past" unless date <= Date.today
