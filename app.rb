@@ -29,6 +29,7 @@ class App < Sinatra::Application
         t = s.next_name ? "#{s.days_until} Days Until #{s.next_name}" : "#{s.days_down} Days With #{s.name}"
         c = Chart.new(s.days_down, s.days_until, t)
 
+        etag date
         content_type 'image/png'
         c.to_blob
     end
@@ -46,6 +47,7 @@ class App < Sinatra::Application
 
         c = Chart.new(days_down, days_left, t)
 
+        etag [start_date, end_date]
         content_type 'image/png'
         c.to_blob
     end
