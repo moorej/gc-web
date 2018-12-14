@@ -8,6 +8,7 @@ source 'https://rubygems.org' do
     gem 'unicorn'
     gem 'foreman'
     gem 'rack-conneg'
+    gem 'rack-cache'
 
     # Graphs
     gem 'gruff'

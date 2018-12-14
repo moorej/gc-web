@@ -3,6 +3,13 @@ require 'date'
 require './chart'
 
 class App < Sinatra::Application
+    set :static_cache_control, [:public, :max_age => 3600]
+
+    before do
+        cache_control :public, :must_revalidate, :max_age => 3600
+        expires 3600, :public, :must_revalidate
+    end
+
     get '/' do
         send_file File.join(settings.public_folder, 'readme.html')
     end
@@ -11,6 +18,7 @@ class App < Sinatra::Application
         date = query_date_to_date(params[:date])
         halt 400, "400 Date must be in the past" unless date <= Date.today
         spade = Spade.new(date)
+        etag spade.img_url
         send_file spade.img_url
     end
 
