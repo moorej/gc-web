@@ -74,7 +74,8 @@
   <div class="row mt-5">
     <div class="col-lg-12">
       <h2>Automagic Spade</h2>
-      <p>The Automagic Spade will update automatically as your status in the Garden progresses. Once you install the dynamic spade in your signature it will progress from seedling to diamond based upon the intervals set by the Garden Club rules and the date you entered the Garden.</p>
+      <img class="float-left mr-2" id="imgSpade" src="../images/gold.png"/>
+      <p class="pull-left">The Automagic Spade will update automatically as your status in the Garden progresses. Once you install the dynamic spade in your signature it will progress from seedling to diamond based upon the intervals set by the Garden Club rules and the date you entered the Garden.</p>
       <h4>How to use</h4>
       <p>Using the spade is very easy, however, before we move forward you will need to know the date of your last hard pull.</p>
       <ol>
@@ -96,7 +97,7 @@
       <h4>How to use</h4>
       <ol>
         <li>Put the date you started gardening, likely the date of your last hard pull, and your goal date in YYYYMMDD format.  For example, the date July 15th, 2018 would be written 20180715.  If the month or day is a single digit, you <em>must</em> preface the number with a zero.</li>
-        <li>Replace <code>GARDEN_START_DATE</code> and <code>GARDEN_GOAL_DATE</code>in the below code with the dates from the last step.<br><code>&lt;img src=&quot;http://mfgarden.club/garden_goal_chart/<span class="dateGardenEntry">GARDEN_START_DATE</span>/<span class="dateGardenGoal">GARDEN_GOAL_DATE</span>&quot; title=&quot;Garden Goal Chart&quot;&gt;</code></li>
+        <li>Replace <code>GARDEN_START_DATE</code> and <code>GARDEN_GOAL_DATE</code> in the below code with the dates from the last step.<br><code>&lt;img src=&quot;http://mfgarden.club/garden_goal_chart/<span class="dateGardenEntry">GARDEN_START_DATE</span>/<span class="dateGardenGoal">GARDEN_GOAL_DATE</span>&quot; title=&quot;Garden Goal Chart&quot;&gt;</code></li>
         <li>Insert the code from above into your signature.</li>
       </ol>
     </div>
@@ -179,6 +180,10 @@
   // Assume the Garden start date and Last HP are the same
   $("#frmDateLastHp").change(function() {
     $("#frmDateGardenEntry").val($("#frmDateLastHp").val()).change()
+    
+    date = new Date($(this).val())
+    formattedDate = $.datepicker.formatDate('yymmdd', date)
+    $("#imgSpade").attr("src", "/spade_image/" + formattedDate)
   })
 
   // Make sure the goal date is after the start date

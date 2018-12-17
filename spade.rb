@@ -21,7 +21,7 @@ class Spade
     s = get_current_spade_partial(date)
 
     partial = {
-      :img_url    => "images/#{s[:id].downcase}.png",
+      :img_url    => "public/images/#{s[:id].downcase}.png",
       :days_down  => (@today - (date >> s[:min_mo])).to_i,
       :days_until => s[:dur] != 9999 ? ((date >> (s[:min_mo] + s[:dur])) - @today).to_i :  -1
     }
