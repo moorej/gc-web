@@ -74,8 +74,10 @@
   <div class="row mt-5">
     <div class="col-lg-12">
       <h2>Automagic Spade</h2>
-      <img class="float-left mr-2" id="imgSpade" src="../images/gold.png"/>
-      <p class="pull-left">The Automagic Spade will update automatically as your status in the Garden progresses. Once you install the dynamic spade in your signature it will progress from seedling to diamond based upon the intervals set by the Garden Club rules and the date you entered the Garden.</p>
+      <div class="clearfix">
+        <img class="float-left mr-2" id="imgSpade" src="../images/gold.png"/>
+        <p>The Automagic Spade will update automatically as your status in the Garden progresses. Once you install the dynamic spade in your signature it will progress from seedling to diamond based upon the intervals set by the Garden Club rules and the date you entered the Garden.</p>
+      </div>
       <h4>How to use</h4>
       <p>Using the spade is very easy, however, before we move forward you will need to know the date of your last hard pull.</p>
       <ol>
@@ -84,6 +86,7 @@
         <li>Insert the code from above into your signature.<br>HINT: If you put this code at the top of your signature it <em>usually</em> resolved alignment issues.</li>
       </ol>
       <h2 class="mt-5">Spade Countdown Chart</h2>
+      <img id="imgSpadeCountdownChart" src="#" hidden="true" />
       <p>The Spade Countdown Chart will show how many days remain until you reach the next spade. In the event that you've reach Diamond status, the chart will change to show how long you held that coveted position.</p>
       <h4>How to use</h4>
       <p>Using the chart, much like the Automagic Spade, is very easy, however, before we move forward you will need to know the date of your last hard pull.</p>
@@ -93,6 +96,7 @@
         <li>Insert the code from above into your signature.</li>
       </ol>
       <h2 class="mt-5">Garden Club Goal Chart</h2>
+      <img class="mr-2" id="imgGardenGoalChart" src="#" hidden="true" />
       <p>You've made it this far, how about we go for broke? The Garden Club Goal Chart will show how many days remain until you achieve your Garden Club goal. Obviously, if your goal is a certain score or credit limit this isn't going to help, however, if your goal is a date we can have some fun. Once the goal date is reached, the chart will change to show how many days you've been in the Garden.</p>
       <h4>How to use</h4>
       <ol>
@@ -175,30 +179,64 @@
     } else {
       $("#btnShowCodeModel").prop('disabled', false);
     }
+
+    // If goal dates are set, update chart on this page.
   })
 
-  // Assume the Garden start date and Last HP are the same
   $("#frmDateLastHp").change(function() {
+    // Assume the Garden start date and Last HP are the same
     $("#frmDateGardenEntry").val($("#frmDateLastHp").val()).change()
     
+    // Get the date value
     date = new Date($(this).val())
     formattedDate = $.datepicker.formatDate('yymmdd', date)
-    $("#imgSpade").attr("src", "/spade_image/" + formattedDate)
-  })
-
-  // Make sure the goal date is after the start date
-  $("#frmDateGardenEntry").change(function(){
-    date = new Date($(this).val())
-    $("#frmDateGardenGoal").datepicker("option", "minDate", date)  
-  })
-
-  //
-  $(".date").click(function() {
-
-  });
     
+    // Update the spade on this page
+    $("#imgSpade").attr("src", "/spade_image/" + formattedDate)
+
+    // Update the countedown chart and make it visible
+    $("#imgSpadeCountdownChart").attr("src", "/spade_countdown_chart/" + formattedDate)
+  })
+
+  $("#frmDateGardenEntry").change(function(){
+    // Make sure the goal date is after the start date
+    date = new Date($(this).val())
+    $("#frmDateGardenGoal").datepicker("option", "minDate", date)
+
+    updateGoalChart()
+  })
+
+  $("#frmDateGardenGoal").change(function(){
+    updateGoalChart()
+  })
+
+  // Show some example charts
+  $().ready(function() {
+    var hpDate = new Date()
+    hpDate.setDate(hpDate.getDate()-230)
+    hpDateFormatted = $.datepicker.formatDate('yymmdd', hpDate)
+    $("#imgSpadeCountdownChart").attr("src", "/spade_countdown_chart/" + hpDateFormatted)
+    $("#imgSpadeCountdownChart").attr("hidden", false)
+
+    var goalDate = new Date()
+    goalDate.setDate(goalDate.getDate()+180)
+    goalDateFormatted = $.datepicker.formatDate('yymmdd', goalDate)    
+    $("#imgGardenGoalChart").attr("src", "/garden_goal_chart/" + hpDateFormatted + "/" + goalDateFormatted)
+    $("#imgGardenGoalChart").attr("hidden", false)    
+  })
+      
   function lcFirst(string) {
     return string.charAt(0).toLowerCase() + string.slice(1);
+  }
+
+  function updateGoalChart() {
+    if(!($("#frmDateGardenEntry").val() == "") && !($("#frmDateGardenGoal").val() == "")){
+      hpDate = new Date($("#frmDateGardenEntry").val())
+      hpDateFormatted = $.datepicker.formatDate('yymmdd', hpDate)
+      goalDate = new Date($("#frmDateGardenGoal").val())
+      goalDateFormatted = $.datepicker.formatDate('yymmdd', goalDate)
+      $("#imgGardenGoalChart").attr("src", "/garden_goal_chart/" + hpDateFormatted + "/" + goalDateFormatted)
+    }
   }
 </script>
 
