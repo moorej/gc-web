@@ -6,7 +6,12 @@
   <meta name="description" content="">
   <meta name="author" content="">
   <title>Garden Club Tools</title>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/ui-darkness/jquery-ui.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
 </head>
 <body>
 <!-- Navigation -->
@@ -34,7 +39,39 @@
       <p class="lead">Nifty tools for your Garden Club signature.</p>
     </div>
   </div>
-  <div class="row">
+  <div class="row mt-5"">
+    <div class="col-lg-12">
+      <div class="card text-white bg-info">
+        <h5 class="card-header">Want to Customize the Code?</h5>
+        <div class="card-body">
+          <p>Fill out the fields below and the code examples will automatically update.  All you've got to do is copy-and-paste into your signature!</p>
+          <form>
+            <div class="row">
+              <div class="col-md-3">
+                <label for="frmDateLastHp">Last Hard Pull Date</label>
+                <input id="frmDateLastHp" class="datepicker form-control" placeholder="Click to pick a date..."></input>
+              </div>
+              <div class="col-md-3">
+                <label for="frmDateGardenEntry">Garden Entry Date</label>
+                <input id="frmDateGardenEntry" class="datepicker form-control" placeholder="Click to pick a date..."></input>
+              </div>
+              <div class="col-md-3">
+                <label for="frmDateGardenGoal">Garden Goal Date</label>
+                <input id="frmDateGardenGoal" class="datepicker form-control" placeholder="Click to pick a date..."></input>
+              </div>
+              <div class="col-md-3">
+                <label>&nbsp;</label><br>
+                <button id="btnShowCodeModel" type="button" class="align-self-end btn btn-dark btn-block"  data-toggle="modal" data-target="#modCodeSnippets" disabled="true">
+                  Just Show Me The Code
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row mt-5">
     <div class="col-lg-12">
       <h2>Automagic Spade</h2>
       <p>The Automagic Spade will update automatically as your status in the Garden progresses. Once you install the dynamic spade in your signature it will progress from seedling to diamond based upon the intervals set by the Garden Club rules and the date you entered the Garden.</p>
@@ -42,7 +79,7 @@
       <p>Using the spade is very easy, however, before we move forward you will need to know the date of your last hard pull.</p>
       <ol>
         <li>Put the date of your last hard pull in YYYYMMDD format.  For example, the date July 15th, 2018 would be written 20180715.  If the month or day is a single digit, you <em>must</em> preface the number with a zero.</li>
-        <li>Replace <code>LAST_HP_DATE</code> in the below code with the result of the last step.<br><code>&lt;img src="http://mfgarden.club/spade_image/LAST_HP_DATE" border="0" title="Garden Club Spade" align="right"&gt;</code></li>
+        <li>Replace <code>LAST_HP_DATE</code> in the below code with the result of the last step.<br><code>&lt;img src="http://mfgarden.club/spade_image/<span class="dateLastHp">LAST_HP_DATE</span>" border="0" title="Garden Club Spade" align="right"&gt;</code></li>
         <li>Insert the code from above into your signature.<br>HINT: If you put this code at the top of your signature it <em>usually</em> resolved alignment issues.</li>
       </ol>
       <h2 class="mt-5">Spade Countdown Chart</h2>
@@ -51,7 +88,7 @@
       <p>Using the chart, much like the Automagic Spade, is very easy, however, before we move forward you will need to know the date of your last hard pull.</p>
       <ol>
         <li>Put the date of your last hard pull in YYYYMMDD format.  For example, the date July 15th, 2018 would be written 20180715.  If the month or day is a single digit, you <em>must</em> preface the number with a zero.</li>
-        <li>Replace <code>LAST_HP_DATE</code> in the below code with the result of the last step.<br><code>&lt;img src="http://mfgarden.club/spade_countdown_chart/LAST_HP_DATE" title="graph of days until next spade"&gt;</code></li>
+        <li>Replace <code>LAST_HP_DATE</code> in the below code with the result of the last step.<br><code>&lt;img src="http://mfgarden.club/spade_countdown_chart/<span class="dateLastHp">LAST_HP_DATE</span>" title="Graph of Days Until Next Spade"&gt;</code></li>
         <li>Insert the code from above into your signature.</li>
       </ol>
       <h2 class="mt-5">Garden Club Goal Chart</h2>
@@ -59,7 +96,7 @@
       <h4>How to use</h4>
       <ol>
         <li>Put the date you started gardening, likely the date of your last hard pull, and your goal date in YYYYMMDD format.  For example, the date July 15th, 2018 would be written 20180715.  If the month or day is a single digit, you <em>must</em> preface the number with a zero.</li>
-        <li>Replace <code>GARDEN_START_DATE</code> and <code>GARDEN_GOAL_DATE</code>in the below code with the dates from the last step.<br><code>&lt;img src=&quot;http://mfgarden.club/garden_goal_chart/GARDEN_START_DATE/GARDEN_GOAL_DATE&quot; title=&quot;Garden Goal Chart&quot;&gt;</code></li>
+        <li>Replace <code>GARDEN_START_DATE</code> and <code>GARDEN_GOAL_DATE</code>in the below code with the dates from the last step.<br><code>&lt;img src=&quot;http://mfgarden.club/garden_goal_chart/<span class="dateGardenEntry">GARDEN_START_DATE</span>/<span class="dateGardenGoal">GARDEN_GOAL_DATE</span>&quot; title=&quot;Garden Goal Chart&quot;&gt;</code></li>
         <li>Insert the code from above into your signature.</li>
       </ol>
     </div>
@@ -71,7 +108,94 @@
   </div>
 </div>
 
-<!-- Bootstrap core JavaScript -->
+<div class="modal fade" id="modCodeSnippets" tabindex="-1" role="dialog" aria-labelledby="modCodeSnippetsLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modCodeSnippetsLabel">Code Snippets</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class="card mb-3">
+          <div class="card-header">Automagic Spade</div>
+          <div class="card-body">
+            <code>&lt;img src="http://mfgarden.club/spade_image/<span class="dateLastHp">LAST_HP_DATE</span>" border="0" title="Garden Club Spade" align="right"&gt;</code>
+          </div>
+        </div>
+
+        <div class="card mb-3">
+          <div class="card-header">Spade Countdown Chart</div>
+          <div class="card-body">
+            <code>&lt;img src="http://mfgarden.club/spade_countdown_chart/<span class="dateLastHp">LAST_HP_DATE</span>" title="Graph of Days Until Next Spade"&gt;</code>
+          </div>
+        </div>
+
+        <div class="card mb-3">
+          <div class="card-header">Garden Goal Chart</div>
+          <div class="card-body">
+            <code>&lt;img src=&quot;http://mfgarden.club/garden_goal_chart/<span class="dateGardenEntry">GARDEN_START_DATE</span>/<span class="dateGardenGoal">GARDEN_GOAL_DATE</span>&quot; title=&quot;Garden Goal Chart&quot;&gt;</code>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  // Flush all the fields on a refresh
+  $("input").val(null)
+
+  // Enable Datepickers and make sure that start dates are not in the future
+  $(".datepicker").datepicker();
+  $("#frmDateLastHp").datepicker("option", "maxDate", 0)
+  $("#frmDateGardenEntry").datepicker("option", "maxDate", 0)  
+
+  
+  $(".datepicker").change(function() {
+    // Whenever a datepicker field changes, update all the classes (span tags) that reference it
+    date = new Date($(this).val())
+    formattedDate = $.datepicker.formatDate('yymmdd', date)
+    formattedFieldTitle = lcFirst(this.id.substring(3,this.id.len))
+    
+    $("."+formattedFieldTitle).text(formattedDate)
+
+    // Whenever all date fields are filled in enable the button modal show
+    var empty = $(".datepicker").filter(function() {
+      return this.value === "";
+    });
+    if(empty.length) {
+      $("#btnShowCodeModel").prop('disabled', true);
+    } else {
+      $("#btnShowCodeModel").prop('disabled', false);
+    }
+  })
+
+  // Assume the Garden start date and Last HP are the same
+  $("#frmDateLastHp").change(function() {
+    $("#frmDateGardenEntry").val($("#frmDateLastHp").val()).change()
+  })
+
+  // Make sure the goal date is after the start date
+  $("#frmDateGardenEntry").change(function(){
+    date = new Date($(this).val())
+    $("#frmDateGardenGoal").datepicker("option", "minDate", date)  
+  })
+
+  //
+  $(".date").click(function() {
+
+  });
+    
+  function lcFirst(string) {
+    return string.charAt(0).toLowerCase() + string.slice(1);
+  }
+</script>
 
 </body>
 </html>
