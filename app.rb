@@ -19,7 +19,7 @@ class App < Sinatra::Application
         date = query_date_to_date(params[:date])
         halt 400, "400 Date must be in the past" unless date <= Date.today
         spade = Spade.new(date)
-        etag Digest::MD5.hexdigest Date.today.to_s
+        etag Digest::MD5.hexdigest spade.id
         send_file spade.img_url
     end
 
