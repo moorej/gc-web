@@ -8,7 +8,7 @@ class App < Sinatra::Application
 
     before do
         cache_control :public, :must_revalidate, :max_age => 3600
-        expires 3600, :public, :must_revalidate
+        # expires 3600, :public, :must_revalidate
     end
 
     get '/' do
@@ -19,24 +19,30 @@ class App < Sinatra::Application
         date = query_date_to_date(params[:date])
         halt 400, "400 Date must be in the past" unless date <= Date.today
         spade = Spade.new(date)
+
+        last_modified(spade.start_date)
         etag Digest::MD5.hexdigest spade.id
+
         send_file spade.img_url
     end
 
     get '/spade_countdown_chart/:date' do 
+        etag Digest::MD5.hexdigest Date.today.to_s
+
         date = query_date_to_date(params[:date])
         halt 400, "400 Date must be in the past" unless date <= Date.today
         s = Spade.new(date)        
         t = s.next_name ? "#{s.days_until} Days Until #{s.next_name}" : "#{s.days_down} Days With #{s.name}"
         c = Chart.new(s.days_down, s.days_until, t)
 
-        etag Digest::MD5.hexdigest Date.today.to_s
         content_type 'image/png'
         c.to_blob
     end
 
     get '/garden_goal_chart/:start_date/:end_date' do
         today = Date.today
+        etag Digest::MD5.hexdigest today.to_s
+
         start_date = query_date_to_date(params[:start_date])
         halt 400, "400 Start date must be in the past" unless start_date <= today
         end_date = query_date_to_date(params[:end_date])
@@ -48,7 +54,6 @@ class App < Sinatra::Application
 
         c = Chart.new(days_down, days_left, t)
 
-        etag Digest::MD5.hexdigest Date.today.to_s
         content_type 'image/png'
         c.to_blob
     end

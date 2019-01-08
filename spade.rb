@@ -18,6 +18,7 @@ class Spade
 
   def initialize(date)
     @today = Date.today
+    @spade_date = date
     s = get_current_spade_partial(date)
 
     partial = {
@@ -28,6 +29,14 @@ class Spade
 
     s.merge!(partial)
     s.each {|k,v| instance_variable_set("@#{k}",v)}
+  end
+
+  def start_date()
+    @spade_date >> @min_mo
+  end
+
+  def end_date()
+    @spade_date >> (@min_mo + @dur)
   end
 
   def get_current_spade_partial(hp_date)
