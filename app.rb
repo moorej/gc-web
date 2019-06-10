@@ -58,6 +58,25 @@ class App < Sinatra::Application
         c.to_blob
     end
 
+    get '/custom_goal_chart/:start_date/:end_date/:countdown_text/:success_text' do
+        today = Date.today
+        etag Digest::MD5.hexdigest today.to_s
+
+        start_date = query_date_to_date(params[:start_date])
+        halt 400, "400 Start date must be in the past" unless start_date <= today
+        end_date = query_date_to_date(params[:end_date])
+        halt 400, "400 Start date must be before end date" unless start_date <= end_date
+
+        days_down = (today - start_date).to_i
+        days_left = today <= end_date ? (end_date - today).to_i : -1
+        t = days_left > 0 ?  "#{days_left} #{CGI::unescape(params[:countdown_text])}" : "#{days_down} #{CGI::unescape(params[:success_text])}"
+
+        c = Chart.new(days_down, days_left, t)
+
+        content_type 'image/png'
+        c.to_blob
+    end
+
     not_found do
         status 404
         "404 File Not Found"
