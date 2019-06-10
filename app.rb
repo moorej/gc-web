@@ -69,7 +69,7 @@ class App < Sinatra::Application
 
         days_down = (today - start_date).to_i
         days_left = today <= end_date ? (end_date - today).to_i : -1
-        t = days_left > 0 ?  "#{days_left} #{CGI::unescape(params[:countdown_text])}" : "#{days_down} #{CGI::unescape(params[:success_text])}"
+        t = days_left > 0 ?  "#{days_left} Days #{CGI::unescape(params[:countdown_text])}" : "#{days_down} Days #{CGI::unescape(params[:success_text])}"
 
         c = Chart.new(days_down, days_left, t)
 
